@@ -46,14 +46,21 @@ namespace glfw
     enum class MouseButton {Left, Middle, Right};
     enum class MouseMode { None, Rotation, Zoom, Pan, Translation} mouse_mode;
     IGL_INLINE int launch(bool resizable = true,bool fullscreen = false);
+    IGL_INLINE int launch_with(Viewer *parent, bool resizable = true,bool fullscreen = false);
     IGL_INLINE int launch_init(bool resizable = true,bool fullscreen = false);
     IGL_INLINE bool launch_rendering(bool loop = true);
     IGL_INLINE void launch_shut();
     IGL_INLINE void init();
     IGL_INLINE void init_plugins();
     IGL_INLINE void shutdown_plugins();
+    IGL_INLINE void terminate_plugins();
     Viewer();
     ~Viewer();
+    // Delete copy and move constructors, since GLFWwindow holds a pointer to `this`
+    Viewer(Viewer&&) = delete;
+    Viewer& operator=(Viewer&&) = delete;
+    Viewer(const Viewer&) = delete;
+    Viewer& operator=(const Viewer&) = delete;
     // Mesh IO
     IGL_INLINE bool load_mesh_from_file(const std::string & mesh_file_name);
     IGL_INLINE bool   save_mesh_to_file(const std::string & mesh_file_name);
@@ -120,7 +127,18 @@ namespace glfw
 
     size_t selected_data_index;
     int next_data_id;
+
+    // GLFW event handling
     GLFWwindow* window;
+    double highdpi;
+    double scroll_x;
+    double scroll_y;
+
+    // Handle multiple viewers
+    static Viewer *master; // first viewer ever created
+    Viewer *parent = nullptr;
+    std::vector<Viewer *> children;
+
     // Stores all the viewing options
     ViewerCore core;
     // List of registered plugins

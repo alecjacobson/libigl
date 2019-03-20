@@ -11,12 +11,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <igl/opengl/glfw/Viewer.h>
 #include <igl/opengl/glfw/ViewerPlugin.h>
+#include <igl/opengl/gl.h>
 #include <igl/igl_inline.h>
 #include <memory>
+#include <exception>
 ////////////////////////////////////////////////////////////////////////////////
 
-// Forward declarations
+// Forward declaration
 struct ImGuiContext;
+struct ImGui_ImplGlfw_Data;
 
 namespace igl
 {
@@ -29,6 +32,32 @@ namespace imgui
 
 class ImGuiMenu : public igl::opengl::glfw::ViewerPlugin
 {
+  // RAII for ImGuiContext
+  struct ScopedContext
+  {
+    ImGuiContext *old_context_;
+    ImGui_ImplGlfw_Data *old_binding_data_;
+
+    ScopedContext(ImGuiContext *ctx, ImGui_ImplGlfw_Data *binding_data);
+    ~ScopedContext();
+
+    ScopedContext(ScopedContext &&) = delete;
+    ScopedContext &operator=(ScopedContext &&) = delete;
+    ScopedContext(const ScopedContext &) = delete;
+    ScopedContext &operator=(ScopedContext &) = delete;
+  };
+
+public:
+  ImGuiMenu() = default;
+  virtual ~ImGuiMenu() = default;
+
+private:
+  // Delete copy and move constructors, since we need to manage the internal ImGuiContext *
+  ImGuiMenu(ImGuiMenu&&) = delete;
+  ImGuiMenu& operator=(ImGuiMenu&&) = delete;
+  ImGuiMenu(const ImGuiMenu&) = delete;
+  ImGuiMenu& operator=(const ImGuiMenu&) = delete;
+
 protected:
   // Hidpi scaling to be used for text rendering.
   float hidpi_scaling_;
@@ -37,11 +66,18 @@ protected:
   // May be different from the hipdi scaling!
   float pixel_ratio_;
 
-  // ImGui Context
+  // ImGui context
   ImGuiContext * context_ = nullptr;
+  ImGuiContext * old_context_ = nullptr;
+
+  // ImGui binding data
+  ImGui_ImplGlfw_Data * binding_data_ = nullptr;
+  ImGui_ImplGlfw_Data * old_binding_data_ = nullptr;
 
 public:
   IGL_INLINE virtual void init(igl::opengl::glfw::Viewer *_viewer) override;
+
+  IGL_INLINE void init_imgui();
 
   IGL_INLINE virtual void reload_font(int font_size = 13);
 

@@ -100,7 +100,7 @@ function(igl_download_imgui)
 	)
 	igl_download_project(libigl-imgui
 		GIT_REPOSITORY https://github.com/libigl/libigl-imgui.git
-		GIT_TAG        07ecd3858acc71e70f0f9b2dea20a139bdddf8ae
+		GIT_TAG        b833744dbf1049f491cfdef2d140505d3d4f8ca7
 	)
 endfunction()
 
