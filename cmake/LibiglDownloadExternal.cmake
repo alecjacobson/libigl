@@ -1,6 +1,6 @@
 ################################################################################
 include(DownloadProject)
-
+ 
 # With CMake 3.8 and above, we can hide warnings about git being in a
 # detached head by passing an extra GIT_CONFIG option.
 set(LIBIGL_EXTRA_OPTIONS TLS_VERIFY OFF)
@@ -184,7 +184,7 @@ function(igl_download_test_data)
 	igl_download_project_aux(test_data
 		"${LIBIGL_EXTERNAL}/../tests/data"
 		GIT_REPOSITORY https://github.com/libigl/libigl-tests-data
-		GIT_TAG        b5dddf45e329af685cd107e38770a28cfc18eb15
+		GIT_TAG        e493c6eefaabf4bfce496f0abe51d476ec28df6b
 	)
 endfunction()
 
