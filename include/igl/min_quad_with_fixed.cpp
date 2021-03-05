@@ -2,7 +2,7 @@
 //
 // Copyright (C) 2016 Alec Jacobson <alecjacobson@gmail.com>
 //
-// This Source Code Form is subject to the terms of the Mozilla Public License
+// This Source Code Form is subject to the terms of the Mozilla Public License 
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 #include "min_quad_with_fixed.h"
@@ -242,7 +242,7 @@ IGL_INLINE bool igl::min_quad_with_fixed_precompute(
       // Ideally we'd use LDLT but Eigen doesn't support positive semi-definite
       // matrices:
       // http://forum.kde.org/viewtopic.php?f=74&t=106962&p=291990#p291990
-      if(data.Auu_sym && false)
+      if(data.Auu_sym)
       {
         data.ldlt.compute(NA);
         switch(data.ldlt.info())
