@@ -938,6 +938,13 @@ namespace glfw
     }
   }
 
+  IGL_INLINE void Viewer::get_size(int &w, int &h)
+  {
+    if (window) {
+    glfwGetWindowSize(window, &w, &h);
+    }
+  }
+
   IGL_INLINE void Viewer::resize(int w,int h)
   {
     if (window) {
