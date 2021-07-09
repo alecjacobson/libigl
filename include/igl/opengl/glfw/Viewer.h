@@ -72,7 +72,8 @@ namespace glfw
     IGL_INLINE bool save_scene(std::string fname);
     // Draw everything
     IGL_INLINE void draw();
-    // OpenGL context resize
+    // OpenGL context get size / resize
+    IGL_INLINE std::pair<int, int> get_size(); // helper func for getting the size of current window
     IGL_INLINE void resize(int w,int h); // explicitly set window size
     IGL_INLINE void post_resize(int w,int h); // external resize due to user interaction
     // Helper functions
